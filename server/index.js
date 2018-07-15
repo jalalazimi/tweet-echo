@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
   const options = {
     method: 'GET',
     url: 'https://api.twitter.com/1.1/statuses/show.json',
-    qs: {id: '762207487395188736'},
+    qs: {id: req.query.id},
     headers:
       {
         'Cache-Control': 'no-cache',

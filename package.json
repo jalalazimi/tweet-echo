@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "dom-to-image": "^2.6.0",
     "preact": "^8.2.1",
     "preact-compat": "^3.17.0",
     "sanitize-html": "^1.18.2"
