@@ -23,7 +23,12 @@
     "preact-cli": "^2.0.0"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "express": "^4.16.3",
     "preact": "^8.2.1",
-    "preact-compat": "^3.17.0"
+    "preact-compat": "^3.17.0",
+    "sanitize-html": "^1.18.2",
+    "twitter": "^1.7.1",
+    "twitter-node-client": "^0.0.6"
   }
 }
