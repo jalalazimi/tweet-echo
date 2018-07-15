@@ -1,12 +1,14 @@
 import './style';
 import { Component } from 'preact';
 import axios from 'axios';
+import domtoimage from 'dom-to-image';
 import { extractingTweetIdFromURL, isValidtwitterUrl } from './helper'
+
+var FileSaver = require('file-saver');
 
 const sanitizeHtml = require('sanitize-html');
 
 export default class App extends Component {
-
   state = {
     tweet: {}
   }
@@ -51,6 +53,13 @@ export default class App extends Component {
 
   }
 
+  download() {
+    domtoimage.toBlob(document.getElementById('tweet'))
+      .then(function (blob) {
+        FileSaver.saveAs(blob, 'my-node.png');
+      });
+  }
+
   render() {
     return (
       <div>
@@ -78,11 +87,10 @@ export default class App extends Component {
             </button>
 
 
-
             <div id="tweet">
               <p>{this.state.tweet.text}</p>
             </div>
-            <button onClick={}>download</button>
+            <button onClick={() => this.download()}>download</button>
           </section>
         </section>
 

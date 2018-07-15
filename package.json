@@ -28,10 +28,13 @@
     "request-promise": "^4.2.2"
   },
   "dependencies": {
+    "FileSaver": "^0.10.0",
     "axios": "^0.18.0",
     "dom-to-image": "^2.6.0",
+    "file-saver": "^1.3.8",
     "preact": "^8.2.1",
     "preact-compat": "^3.17.0",
-    "sanitize-html": "^1.18.2"
+    "sanitize-html": "^1.18.2",
+    "streamsaver": "^1.0.1"
   }
 }
