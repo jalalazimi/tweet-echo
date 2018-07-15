@@ -1,12 +1,13 @@
-import './style';
+import './style.scss';
 import { Component } from 'preact';
 import axios from 'axios';
 import domtoimage from 'dom-to-image';
-import { extractingTweetIdFromURL, isValidtwitterUrl } from './helper'
+import { extractingTweetIdFromURL, isValidtwitterUrl } from './helper';
+import Navbar from './partials/navbar';
+
 
 var FileSaver = require('file-saver');
 
-const sanitizeHtml = require('sanitize-html');
 
 export default class App extends Component {
   state = {
@@ -15,15 +16,6 @@ export default class App extends Component {
 
   componentDidMount() {
 
-  }
-
-  clean(html) {
-    return sanitizeHtml(html, {
-      allowedTags: [''],
-      allowedAttributes: {
-        'a': ['href']
-      }
-    });
   }
 
   getUrl(evt) {
@@ -63,38 +55,42 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <section class="primary-background"
-                 style="background-image: url('/static/img/icons-background.svg')">
-          <div className="container">
-            <nav className="navbar">
-              <a href="/" style="display: flex;align-items: center;">
-                <img src="/static/img/logo-white.svg" alt=""/>
-              </a>
-            </nav>
+        <Navbar></Navbar>
+        <section class="hero is-primary">
+          <div class="hero-body">
+            <div class="container">
+              <h1 class="title">
+                Tweet Echo
+              </h1>
+              <h2 class="subtitle">
+                Primary subtitle
+              </h2>
+            </div>
           </div>
-          <section className="section has-text-centered">
-            <div className="section">
-              <p className="heading has-text-white">
-              </p>
-              <p className="has-text-white" style="font-size: 20px;margin-bottom: 40px;">
-              </p>
-            </div>
-            <input name="url" onChange={evt => this.getUrl(evt)}/>
-            <br/>
-            <button className="round-button installation chrome-installation"
-                    onClick={() => this.echo()}>
-              Echo
-            </button>
-
-
-            <div id="tweet">
-              <p>{this.state.tweet.text}</p>
-            </div>
-            <button onClick={() => this.download()}>download</button>
-          </section>
         </section>
 
-        <h1>{this.state.tweet && this.clean(this.state.tweet)}</h1>
+        <section className="section has-text-centered">
+          <div className="section">
+            <p className="heading has-text-white">
+            </p>
+            <p className="has-text-white" style="font-size: 20px;margin-bottom: 40px;">
+            </p>
+          </div>
+          <input name="url" onChange={evt => this.getUrl(evt)}/>
+          <br/>
+          <button className="round-button installation chrome-installation"
+                  onClick={() => this.echo()}>
+            Echo
+          </button>
+
+
+          <div id="tweet">
+            <p>{this.state.tweet.text}</p>
+          </div>
+          <button onClick={() => this.download()}>download</button>
+        </section>
+
+        <h1>{this.state.tweet}</h1>
       </div>
     );
   }

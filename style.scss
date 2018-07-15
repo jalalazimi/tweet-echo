@@ -1,0 +1,39 @@
+@import url(https://fonts.googleapis.com/css?family=Poppins|Open+Sans);
+@import "~bulma/bulma";
+
+html {
+  background-color: #eeeeee;
+  font-size: 16px;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  min-width: 300px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  text-rendering: optimizeLegibility;
+  text-size-adjust: 100%
+}
+
+body, button, input, select, textarea {
+  font-family: Open Sans, sans-serif
+}
+
+body {
+  color: #4a4a4a;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5
+}
+
+a {
+  color: #3273dc;
+  cursor: pointer;
+  text-decoration: none
+}
+
+a strong {
+  color: currentColor
+}
+
+a:hover {
+  color: #363636
+}
