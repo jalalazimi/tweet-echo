@@ -1,31 +1,43 @@
 const express = require('express')
 const request = require('request-promise');
-
+var crypto = require('crypto');
+var OAuth = require('oauth-request');
 const app = express();
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
 
+var twitter = OAuth({
+  consumer: {
+    key: 'uloHq83EUIjx32TSnqJUTWTXt',
+    secret: 'FODNE2TyueQEDuwhPRUmbWyniKQgtCQKbbsjEddtLFMACRbFoM'
+  },
+  signature_method: 'HMAC-SHA1',
+  hash_function: function (base_string, key) {
+    return crypto.createHmac('sha1', key).update(base_string).digest('base64');
+  }
+});
+
+twitter.setToken({
+  key: '16341288-Z9c468O0OC3881egpFRN0i3yxDDakfCVTZ2UCLOWb',
+  secret: 'wOuH1AKqiTazMLehaNvkLhZ8QHFmx755mKZXa69KhWE23'
+});
+
+
+app.get('/', (req, res) => {
+  console.log(req.query.id)
   const options = {
-    method: 'GET',
     url: 'https://api.twitter.com/1.1/statuses/show.json',
     qs: {id: req.query.id},
-    headers:
-      {
-        'Cache-Control': 'no-cache',
-        Authorization: 'OAuth oauth_consumer_key="uloHq83EUIjx32TSnqJUTWTXt",oauth_token="16341288-Z9c468O0OC3881egpFRN0i3yxDDakfCVTZ2UCLOWb",oauth_signature_method="HMAC-SHA1",oauth_timestamp="1531603149",oauth_nonce="KTGNsu4i3NU",oauth_version="1.0",oauth_signature="UOXmJP3Jpsma8wK9WQGDiGVgJdw%3D"'
-      }
+    json: true
   };
-  request(options)
-    .then(body => {
-      res.json(JSON.parse(body));
-    })
-    .catch(function (err) {
-      throw new Error(err);
-    });
+  twitter.get(options, (err, response, tweets) => {
+    if(err) throw new err;
+    res.json(tweets);
+  })
+
 })
 
 app.listen(8523, () => console.log('Example app listening on port 3000!'))

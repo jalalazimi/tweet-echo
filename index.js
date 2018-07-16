@@ -4,6 +4,7 @@ import axios from 'axios';
 import domtoimage from 'dom-to-image';
 import { extractingTweetIdFromURL, isValidtwitterUrl } from './helper';
 import Navbar from './partials/navbar';
+import Cards from './cards';
 
 
 var FileSaver = require('file-saver');
@@ -55,42 +56,36 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <Navbar></Navbar>
-        <section class="hero is-primary">
-          <div class="hero-body">
-            <div class="container">
-              <h1 class="title">
+        <Navbar/>
+        <section className="hero is-primary">
+          <div className="hero-body">
+            <div className="container">
+              <h1 className="title">
                 Tweet Echo
               </h1>
-              <h2 class="subtitle">
+              <h2 className="subtitle">
                 Primary subtitle
               </h2>
+              <div className="field  has-addons">
+                <div className="control is-large is-loading">
+                  <input name="url" onChange={evt => this.getUrl(evt)} className="input is-large" type="text"
+                         placeholder="Tweet URL"/>
+                </div>
+                <p className="control">
+                  <a className="button is-info is-large" onClick={() => this.echo()}>
+                    Echo
+                  </a>
+                </p>
+              </div>
             </div>
           </div>
         </section>
+        {Object.keys(this.state.tweet).length ? <Cards tweet={this.state.tweet}/> : null}
 
         <section className="section has-text-centered">
-          <div className="section">
-            <p className="heading has-text-white">
-            </p>
-            <p className="has-text-white" style="font-size: 20px;margin-bottom: 40px;">
-            </p>
-          </div>
-          <input name="url" onChange={evt => this.getUrl(evt)}/>
-          <br/>
-          <button className="round-button installation chrome-installation"
-                  onClick={() => this.echo()}>
-            Echo
-          </button>
-
-
-          <div id="tweet">
-            <p>{this.state.tweet.text}</p>
-          </div>
-          <button onClick={() => this.download()}>download</button>
+          <button className="button" onClick={() => this.download()}>download</button>
         </section>
 
-        <h1>{this.state.tweet}</h1>
       </div>
     );
   }
