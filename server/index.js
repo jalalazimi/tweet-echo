@@ -28,18 +28,39 @@ twitter.setToken({
 });
 
 
-app.get('/', (req, res) => {
-  console.log(req.query.id)
+const getOembed = () => {
   const options = {
-    url: 'https://api.twitter.com/1.1/statuses/show.json',
-    qs: {id: req.query.id},
+    url: 'https://publish.twitter.com/oembed',
+    qs: {url: 'https://twitter.com/behzad_bh/status/1020442050464972801'},
     json: true
   };
-  twitter.get(options, (err, response, tweets) => {
-    if(err) throw new err;
-    res.json(tweets);
+  return new Promise(function (resolve, reject) {
+    twitter.get(options, async (err, response, tweets) => {
+      if (err) return reject(err);
+      resolve(tweets);
+    })
   })
+}
 
+const tweetData = async id => {
+  const options = {
+    url: 'https://api.twitter.com/1.1/statuses/show.json',
+    qs: {id},
+    json: true
+  };
+  return new Promise(function (resolve, reject) {
+    twitter.get(options, async (err, response, tweets) => {
+      if (err) return reject(err);
+      resolve(tweets);
+    })
+  })
+}
+
+app.get('/', (req, res) => {
+  Promise.all([tweetData(req.query.id), getOembed()])
+    .then((tweet) => {
+      res.json(Object.assign(tweet[0], tweet[1]))
+    })
 })
 
 app.listen(8523, () => console.log('Example app listening on port 3000!'))
