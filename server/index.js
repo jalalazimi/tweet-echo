@@ -1,12 +1,14 @@
 const express = require('express')
 const request = require('request-promise');
-var crypto = require('crypto');
-var OAuth = require('oauth-request');
+const crypto = require('crypto');
+const cors = require('cors');
+const OAuth = require('oauth-request');
 const app = express();
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use(cors());
 
 
 var twitter = OAuth({
