@@ -2,10 +2,8 @@ import * as express from "express";
 import * as crypto from 'crypto';
 import * as cors from 'cors';
 import * as OAuth from 'oauth-request';
-
-const request = require('request-promise');
-const bodyParser = require('body-parser');
-const stripHtml = require("string-strip-html");
+import * as bodyParser from 'body-parser';
+import stripHtml from "string-strip-html";
 
 const app = express();
 
@@ -15,10 +13,10 @@ app.use(bodyParser.json());
 app.use(cors());
 
 
-const isValidtwitterUrl = url => /(^|[^'"])(https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+))/.test(url);
+const isValidTwitterUrl = (url: string): boolean => /(^|[^'"])(https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+))/.test(url);
 
 const extractingTweetIdFromURL = url => {
-    if (!isValidtwitterUrl(url)) {
+    if (!isValidTwitterUrl(url)) {
         throw new Error('not valid');
     }
     const arr = url.split('/');
@@ -33,7 +31,10 @@ const twitter = OAuth({
     },
     signature_method: 'HMAC-SHA1',
     hash_function: function (base_string, key) {
-        return crypto.createHmac('sha1', key).update(base_string).digest('base64');
+        return crypto
+            .createHmac('sha1', key)
+            .update(base_string)
+            .digest('base64');
     }
 });
 
@@ -50,10 +51,11 @@ const getOembed = (url) => {
         json: true
     };
     return new Promise(function (resolve, reject) {
-        twitter.get(options, async (err, response, tweets) => {
-            if (err) return reject(err);
-            resolve(tweets);
-        });
+        twitter
+            .get(options, async (err, response, tweets) => {
+                if (err) return reject(err);
+                resolve(tweets);
+            });
     });
 };
 
@@ -71,13 +73,14 @@ const tweetData = async url => {
     });
 };
 
-const removeUserDataFromTweet = t => {
+const removeUserDataFromTweet = (t: string): string => {
     return t.substr(0, t.lastIndexOf("—"));
 };
 
 app.get('/', (req, res): void => {
     const {url} = req.query;
-    Promise.all([tweetData(url), getOembed(url)])
+    Promise
+        .all([tweetData(url), getOembed(url)])
         .then((tweet: any) => {
             res.json(Object.assign(tweet[0], {full_text: removeUserDataFromTweet(stripHtml(tweet[1].html))}));
         })
