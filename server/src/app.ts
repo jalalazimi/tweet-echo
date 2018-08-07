@@ -4,25 +4,25 @@ import * as cors from 'cors';
 import * as OAuth from 'oauth-request';
 
 const request = require('request-promise');
-
 const bodyParser = require('body-parser');
 const stripHtml = require("string-strip-html");
 
 const app = express();
 
+app.set("port", process.env.PORT || 8523);
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cors());
 
 
-const isValidtwitterUrl = url => /(^|[^'"])(https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+))/.test(url)
+const isValidtwitterUrl = url => /(^|[^'"])(https?:\/\/twitter\.com\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+))/.test(url);
 
 const extractingTweetIdFromURL = url => {
     if (!isValidtwitterUrl(url)) {
-        throw new Error('not valid')
+        throw new Error('not valid');
     }
     const arr = url.split('/');
-    return arr[arr.length - 1]
+    return arr[arr.length - 1];
 };
 
 
@@ -53,9 +53,9 @@ const getOembed = (url) => {
         twitter.get(options, async (err, response, tweets) => {
             if (err) return reject(err);
             resolve(tweets);
-        })
-    })
-}
+        });
+    });
+};
 
 const tweetData = async url => {
     const options = {
@@ -67,23 +67,23 @@ const tweetData = async url => {
         twitter.get(options, async (err, response, tweets) => {
             if (err) return reject(err);
             resolve(tweets);
-        })
-    })
-}
+        });
+    });
+};
 
 const removeUserDataFromTweet = t => {
     return t.substr(0, t.lastIndexOf("—"));
-}
+};
 
 app.get('/', (req, res): void => {
     const {url} = req.query;
     Promise.all([tweetData(url), getOembed(url)])
         .then((tweet: any) => {
-            res.json(Object.assign(tweet[0], {full_text: removeUserDataFromTweet(stripHtml(tweet[1].html))}))
+            res.json(Object.assign(tweet[0], {full_text: removeUserDataFromTweet(stripHtml(tweet[1].html))}));
         })
         .catch(err => {
-            throw new Error(err)
-        })
-})
+            throw new Error(err);
+        });
+});
 
-app.listen(8523, () => console.log('Example app listening on port 3000!'))
+export default app;
