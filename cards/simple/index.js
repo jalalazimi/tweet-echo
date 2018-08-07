@@ -1,15 +1,16 @@
 import { Component } from 'preact';
 
 export default class Simple extends Component {
-
   render() {
-    const {text, extended_entities,user} = this.props.tweet;
+    const {full_text, extended_entities, user} = this.props.tweet;
     return <div className="card" id="tweet">
-      <div className="card-image">
-        <figure className="image is-4by3">
-          <img src={extended_entities && extended_entities.media[0].media_url} alt="Placeholder image"/>
-        </figure>
-      </div>
+      {extended_entities && extended_entities.media[0].media_url ?
+        <div className="card-image">
+          <figure className="image is-4by3">
+            <img src={extended_entities && extended_entities.media[0].media_url} alt="Placeholder image"/>
+          </figure>
+        </div>
+        : null}
       <div className="card-content">
         <div className="media">
           <div className="media-left">
@@ -24,7 +25,7 @@ export default class Simple extends Component {
         </div>
 
         <div className="content">
-          {text}
+          {full_text}
           <br/>
         </div>
       </div>

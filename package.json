@@ -18,6 +18,7 @@
     "build/*"
   ],
   "devDependencies": {
+    "@types/express": "^4.16.0",
     "body-parser": "^1.18.3",
     "eslint": "^4.5.0",
     "eslint-config-synacor": "^1.1.0",
@@ -27,7 +28,8 @@
     "preact-cli": "^2.0.0",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
-    "sass-loader": "^7.0.3"
+    "sass-loader": "^7.0.3",
+    "typescript": "^3.0.1"
   },
   "dependencies": {
     "FileSaver": "^0.10.0",
@@ -41,6 +43,7 @@
     "preact": "^8.2.1",
     "preact-compat": "^3.17.0",
     "sanitize-html": "^1.18.2",
-    "streamsaver": "^1.0.1"
+    "streamsaver": "^1.0.1",
+    "string-strip-html": "^3.2.0"
   }
 }
